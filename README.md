@@ -71,7 +71,7 @@ npm run server:dev    # backend
 Set environment:
 ```
 JWT_SECRET=<minimum 32 char secret>
-CORS_ORIGIN=http://localhost:5173
-PORT=4000
-DATABASE_URL=postgresql://...
+CORS_ORIGIN=<your-frontend-origin>
+PORT=<server-port>
+DATABASE_URL=<postgres-connection-string>
 ```
