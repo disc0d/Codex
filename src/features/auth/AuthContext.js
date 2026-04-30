@@ -1,5 +1,6 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
 import { api } from '@/lib/api';
 const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
@@ -30,10 +31,20 @@ export const AuthProvider = ({ children }) => {
         void hydrate();
     }, []);
     const login = async (email, password) => {
-        const { data } = await api.post('/auth/login', { email, password });
-        localStorage.setItem('ops_token', data.token);
-        setUser(data.user);
-        await syncCsrf();
+        try {
+            const { data } = await api.post('/auth/login', { email, password });
+            localStorage.setItem('ops_token', data.token);
+            setUser(data.user);
+            await syncCsrf();
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                const payload = error.response?.data;
+                if (payload?.error?.code)
+                    throw payload.error;
+            }
+            throw { code: 'AUTH_UNKNOWN', message: 'Unable to sign in. Please try again.' };
+        }
     };
     const logout = () => {
         localStorage.removeItem('ops_token');

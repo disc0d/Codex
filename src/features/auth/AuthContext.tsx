@@ -1,8 +1,15 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
 import { api } from '@/lib/api';
 
 type Role = 'owner' | 'manager' | 'analyst';
 interface User { id: string; email: string; role: Role; }
+
+export interface AuthApiError {
+  code: string;
+  message: string;
+}
+
 interface AuthContextValue {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
@@ -40,10 +47,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const { data } = await api.post('/auth/login', { email, password });
-    localStorage.setItem('ops_token', data.token);
-    setUser(data.user);
-    await syncCsrf();
+    try {
+      const { data } = await api.post('/auth/login', { email, password });
+      localStorage.setItem('ops_token', data.token);
+      setUser(data.user);
+      await syncCsrf();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const payload = error.response?.data as { error?: AuthApiError } | undefined;
+        if (payload?.error?.code) throw payload.error;
+      }
+      throw { code: 'AUTH_UNKNOWN', message: 'Unable to sign in. Please try again.' } as AuthApiError;
+    }
   };
 
   const logout = () => {

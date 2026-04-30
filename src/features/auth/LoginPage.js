@@ -20,8 +20,26 @@ export const LoginPage = () => {
             await login(email.trim(), password.trim());
             navigate('/dashboard');
         }
-        catch {
-            setError('Invalid credentials or account locked.');
+        catch (caught) {
+            const authError = caught;
+            switch (authError.code) {
+                case 'AUTH_INVALID_CREDENTIALS':
+                    setError('Invalid email or password.');
+                    break;
+                case 'AUTH_ACCOUNT_UNVERIFIED':
+                    setError('Please verify your account before signing in.');
+                    break;
+                case 'AUTH_ACCOUNT_LOCKED':
+                    setError('Your account is locked. Please contact support.');
+                    break;
+                case 'AUTH_TOKEN_INVALID':
+                case 'AUTH_TOKEN_EXPIRED':
+                case 'AUTH_REFRESH_TOKEN_MISSING':
+                    setError('Your session is no longer valid. Please sign in again.');
+                    break;
+                default:
+                    setError(authError.message || 'Unable to sign in right now.');
+            }
         }
         finally {
             setSubmitting(false);
