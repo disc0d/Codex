@@ -13,7 +13,7 @@ import forecastRoutes from './modules/forecast/routes.js';
 import intelligenceRoutes from './modules/intelligence/routes.js';
 import governanceRoutes from './modules/governance/routes.js';
 
-const app = express();
+export const app = express();
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -42,6 +42,8 @@ app.use('/api/governance', governanceRoutes);
 
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
 
-app.listen(env.PORT, () => {
-  console.log(`OpsPulse API running on :${env.PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(env.PORT, () => {
+    console.log(`OpsPulse API running on :${env.PORT}`);
+  });
+}
