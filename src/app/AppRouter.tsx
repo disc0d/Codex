@@ -3,6 +3,8 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { Loading } from '@/components/ui/Loading';
 import { useAuth } from '@/features/auth/AuthContext';
 import { LoginPage } from '@/features/auth/LoginPage';
+import { SignupPage } from '@/features/auth/SignupPage';
+import { VerifyPage } from '@/features/auth/VerifyPage';
 import { DashboardPage } from '@/features/dashboard/DashboardPage';
 import { BillingPage } from '@/features/billing/BillingPage';
 import { SecurityPage } from '@/features/admin/SecurityPage';
@@ -22,6 +24,8 @@ const Protected = ({ children }: { children: JSX.Element }) => {
 export const AppRouter = () => (
   <Routes>
     <Route path="/login" element={<LoginPage />} />
+    <Route path="/signup" element={<SignupPage />} />
+    <Route path="/verify" element={<VerifyPage />} />
     <Route path="/dashboard" element={<Protected><DashboardPage /></Protected>} />
     <Route path="/workflows" element={<Protected><WorkflowsPage /></Protected>} />
     <Route path="/alerts" element={<Protected><AlertsPage /></Protected>} />
