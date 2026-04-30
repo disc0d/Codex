@@ -71,7 +71,7 @@ export const store = {
     { id: 'rec_3', title: 'Convert top overage accounts to enterprise plan', rationale: 'Captures expansion ARR', annualImpact: 211000, applied: false }
   ] as Recommendation[],
   governanceActions: [
-    { id: 'gov_1', title: 'Enable automated credit notes above $10k', riskLevel: 'high', category: 'billing', status: 'pending', requestedBy: 'owner@opspulse.io', requestedAt: new Date().toISOString(), decidedAt: null },
+    { id: 'gov_1', title: 'Enable automated credit notes above $10k', riskLevel: 'high', category: 'billing', status: 'pending', requestedBy: 'ameer.mubarak1235@gmail.com', requestedAt: new Date().toISOString(), decidedAt: null },
     { id: 'gov_2', title: 'Increase P1 auto-close timer to 48h', riskLevel: 'medium', category: 'workflow', status: 'pending', requestedBy: 'manager@opspulse.io', requestedAt: new Date().toISOString(), decidedAt: null }
   ] as GovernanceAction[],
   subscription: {
